@@ -1,6 +1,8 @@
-def main():
-    print("Hello from jargon!")
+import sys
 
+def main():
+    
+    return sys.argv[1]
 
 if __name__ == "__main__":
-    main()
+    result = main()
