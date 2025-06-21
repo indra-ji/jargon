@@ -1,14 +1,15 @@
 import sys
 import os
 import json
-from openai import OpenAI
+from groq import Groq
 from dotenv import load_dotenv
 import argparse
 
 #Load environment variables from .env file
 load_dotenv()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Initialize OpenAI client for Groq API
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def load_json_file(filepath: str) -> dict:
     """Load prompts or configs from specified JSON file"""
@@ -65,7 +66,8 @@ def main():
                 {"role": "user", "content": f"Define: {term}"}
             ],
             max_tokens=config['max_tokens']['value'],
-            temperature=config['temperature']['value']
+            temperature=config['temperature']['value'],
+            stream=config['stream']['value']
         )
         
         definition = response.choices[0].message.content.strip()

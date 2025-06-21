@@ -1,8 +1,8 @@
 {
   "model": {
-    "value": "gpt-4.1-nano",
-    "version": "1.0.0",
-    "last_edited": "2025-06-21"
+    "value": "llama-3.1-8b-instant",
+    "version": "3.0.0",
+    "last_edited": "2025-06-22"
   },
   "max_tokens": {
     "value": 100,
@@ -13,5 +13,10 @@
     "value": 0.7,
     "version": "1.0.0",
     "last_edited": "2025-06-21"
+  },
+  "stream": {
+    "value": false,
+    "version": "1.0.0",
+    "last_edited": "2025-06-22"
   }
 }
