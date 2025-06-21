@@ -25,20 +25,21 @@ def load_json_file(filepath: str) -> dict:
         print(f"Error: Invalid JSON in {filepath}")
         sys.exit(1)
 
-def get_input_text() -> str:
-    """Get input text from command line"""
+def get_term() -> str:
+    """Get input text from command line and capitalize"""
 
     parser = argparse.ArgumentParser(description='Get definition of a word or phrase')
     parser.add_argument('text', help='The word or phrase to define')
     args = parser.parse_args()
-    input_text = args.text
+    term = args.text
+    term = term.capitalize()
     
     # Check if input is text (not empty and contains non-whitespace characters)
-    if not input_text or not input_text.strip():
+    if not term or not term.strip():
         print("Error: Input text cannot be empty")
         sys.exit(1)
             
-    return input_text
+    return term
     
 def main():
 
@@ -49,7 +50,7 @@ def main():
     config = load_json_file('config.json')
 
     # Get input text from command line
-    input_text = get_input_text()
+    term = get_term()
     
     # Prompt OpenAI API for definition
     try:
@@ -57,18 +58,19 @@ def main():
             model=config['model']['value'],
             messages=[
                 {"role": "system", "content": prompts['system']['prompt']},
-                {"role": "user", "content": f"Define: {input_text}"}
+                {"role": "user", "content": f"Define: {term}"}
             ],
             max_tokens=config['max_tokens']['value'],
             temperature=config['temperature']['value']
         )
         
-        output_text = response.choices[0].message.content.strip()
-
-        print(output_text)
+        definition = response.choices[0].message.content.strip()
         
     except Exception as e:
         print(f"Error getting definition: {str(e)}")
+    
+    #Format and print output 
+    print(f"{term} - {definition}")
 
 if __name__ == "__main__":
     main()
