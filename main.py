@@ -3,6 +3,7 @@ import os
 import json
 from openai import OpenAI
 from dotenv import load_dotenv
+import argparse
 
 #Load environment variables from .env file
 load_dotenv()
@@ -24,6 +25,21 @@ def load_json_file(filepath: str) -> dict:
         print(f"Error: Invalid JSON in {filepath}")
         sys.exit(1)
 
+def get_input_text() -> str:
+    """Get input text from command line"""
+
+    parser = argparse.ArgumentParser(description='Get definition of a word or phrase')
+    parser.add_argument('text', help='The word or phrase to define')
+    args = parser.parse_args()
+    input_text = args.text
+    
+    # Check if input is text (not empty and contains non-whitespace characters)
+    if not input_text or not input_text.strip():
+        print("Error: Input text cannot be empty")
+        sys.exit(1)
+            
+    return input_text
+    
 def main():
 
     # Load prompts configuration
@@ -33,7 +49,7 @@ def main():
     config = load_json_file('config.json')
 
     # Get input text from command line
-    input_text = sys.argv[1]
+    input_text = get_input_text()
     
     # Prompt OpenAI API for definition
     try:
