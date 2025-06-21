@@ -4,41 +4,33 @@ import json
 from openai import OpenAI
 from dotenv import load_dotenv
 
+#Load environment variables from .env file
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-def load_prompts():
-    """Load prompts from prompts.json file"""
+def load_json_file(filepath: str) -> dict:
+    """Load prompts or configs from specified JSON file"""
+
     try:
-        with open('prompts.json', 'r') as f:
+        with open(filepath, 'r') as f:
             return json.load(f)
+        
     except FileNotFoundError:
-        print("Error: prompts.json file not found")
-        sys.exit(1)
-    except json.JSONDecodeError:
-        print("Error: Invalid JSON in prompts.json")
+        print(f"Error: {filepath} file not found")
         sys.exit(1)
 
-def load_config():
-    """Load configuration from config.json file"""
-    try:
-        with open('config.json', 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        print("Error: config.json file not found")
-        sys.exit(1)
     except json.JSONDecodeError:
-        print("Error: Invalid JSON in config.json")
+        print(f"Error: Invalid JSON in {filepath}")
         sys.exit(1)
 
 def main():
 
     # Load prompts configuration
-    prompts = load_prompts()
+    prompts = load_json_file('prompts.json')
     
     # Load generation configuration
-    config = load_config()
+    config = load_json_file('config.json')
 
     # Get input text from command line
     input_text = sys.argv[1]
