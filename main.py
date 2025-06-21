@@ -32,8 +32,11 @@ def get_term() -> str:
     parser.add_argument('text', help='The word or phrase to define')
     args = parser.parse_args()
     term = args.text
-    term = term.capitalize()
     
+    # Capitalize first letter if not already capitalized
+    if not term[0].isupper():
+        term = term.capitalize()
+
     # Check if input is text (not empty and contains non-whitespace characters)
     if not term or not term.strip():
         print("Error: Input text cannot be empty")
