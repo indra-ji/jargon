@@ -1,27 +1,58 @@
 import sys
 import os
+import json
 from openai import OpenAI
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+def load_prompts():
+    """Load prompts from prompts.json file"""
+    try:
+        with open('prompts.json', 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print("Error: prompts.json file not found")
+        sys.exit(1)
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON in prompts.json")
+        sys.exit(1)
+
+def load_config():
+    """Load configuration from config.json file"""
+    try:
+        with open('config.json', 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print("Error: config.json file not found")
+        sys.exit(1)
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON in config.json")
+        sys.exit(1)
+
 def main():
 
+    # Load prompts configuration
+    prompts = load_prompts()
+    
+    # Load generation configuration
+    config = load_config()
+
+    # Get input text from command line
     input_text = sys.argv[1]
     
     # Prompt OpenAI API for definition
     try:
         response = client.chat.completions.create(
-            model="gpt-4.1-nano",
+            model=config['model']['value'],
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that provides clear, concise definitions of technical or scientific words, phrases, or concepts. Be as concise as possible. There is no need to repeat the word in the definition."},
+                {"role": "system", "content": prompts['system']['prompt']},
                 {"role": "user", "content": f"Define: {input_text}"}
             ],
-            max_tokens=100,
-            temperature=0.7
+            max_tokens=config['max_tokens']['value'],
+            temperature=config['temperature']['value']
         )
         
         output_text = response.choices[0].message.content.strip()

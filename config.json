@@ -1,0 +1,17 @@
+{
+  "model": {
+    "value": "gpt-4o-mini",
+    "version": "1.0.0",
+    "last_edited": "2025-06-21"
+  },
+  "max_tokens": {
+    "value": 100,
+    "version": "1.0.0", 
+    "last_edited": "2025-06-21"
+  },
+  "temperature": {
+    "value": 0.7,
+    "version": "1.0.0",
+    "last_edited": "2025-06-21"
+  }
+}
