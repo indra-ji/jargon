@@ -33,14 +33,15 @@ def get_term() -> str:
     args = parser.parse_args()
     term = args.text
     
-    # Capitalize first letter if not already capitalized
-    if not term[0].isupper():
-        term = term.capitalize()
 
     # Check if input is text (not empty and contains non-whitespace characters)
     if not term or not term.strip():
         print("Error: Input text cannot be empty")
         sys.exit(1)
+
+    # Capitalize first letter if not already capitalized
+    if not term[0].isupper():
+        term = term.capitalize()
             
     return term
     
